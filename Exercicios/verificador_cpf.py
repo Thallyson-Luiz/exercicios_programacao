@@ -16,6 +16,7 @@ while True:
             primeiros_numeros_cpf = primeiros_numeros_cpf.split('.')
             primeiros_numeros_CPF = []
             ultimosNumerosCPF = []
+
             for numeros in primeiros_numeros_cpf:
                 if len(numeros) == 3:
                     numeros = list(numeros)
@@ -41,7 +42,7 @@ while True:
             continue
 
         try:
-            if len(primeiros_numeros_CPF) != 9 and len(ultimosNumerosCPF) == 2:
+            if len(primeiros_numeros_CPF) != 9 or len(ultimosNumerosCPF) != 2:
                 raise ValueError
         except:
             os.system('cls')
@@ -53,9 +54,18 @@ while True:
             cpf += str(numero)
         for numero in ultimosNumerosCPF:
             cpf += str(numero)
-        cpf = int(cpf)
-    
-    cpf = list(str(cpf))
+
+    cpf = str(cpf)
+    cpf = list(cpf)
+    try:
+        cpf_numeros_repetidos = cpf == [cpf[0]] * len(cpf)
+        if cpf_numeros_repetidos:
+            raise ValueError
+    except:
+        os.system('cls')
+        print(f'{vermelho}erro: CPF com muitos numeros repetidos!{branco}')
+        continue
+
     contador = 10
     total_soma_cpf = 0
     for indice, numero in enumerate(cpf):
@@ -97,15 +107,3 @@ while True:
     else:
         os.system('cls')
         print(f'{vermelho}CPF Inválido ou nao existente!{branco}')
-
-
-
-
-
-
-
-
-
-
-
-
