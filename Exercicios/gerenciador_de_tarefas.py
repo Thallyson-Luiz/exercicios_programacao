@@ -5,70 +5,89 @@ import json
 vermelho = "\033[31m"
 branco = "\033[0m"
 verde = "\033[32m"
+azul = "\033[34m"
+
+#funções
 
 def ler_lista():
     try:
         with open('lista.json', 'r', encoding='utf-8') as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
-        return []
+        print(f'{vermelho}Nenhuma tarefa para listar!, adicione uma tarefa primeiro.{branco}')
+        return 
 
 def salvar_lista(lista):
     with open('lista.json', 'w', encoding='utf-8') as f:
         json.dump(lista, f, ensure_ascii=False, indent=4)
 
 # comandos
-def listar():
-    lista = ler_lista()
-    print('lista de tarefas:')
+def listar(lista):
+    os.system('cls')
+    if lista:
+        print(f'{azul}lista de tarefas:{branco}')
+        print()
+        for tarefa in lista:
+            print(tarefa)
+        print()
+        return
+    print(f'{vermelho}Nenhuma tarefa para listar!{branco}')
     print()
-    for tarefa in lista:
-        print(tarefa)
-    print()
+    return
 
-def apagar():
-    lista = ler_lista()
+def apagar(lista, argumento_deletado):
+    os.system('cls')
     if not lista:
         print(f'{vermelho}Nenhuma tarefa para apagar!{branco}')
         return None
-    deletado = lista.pop()
+    tarefa = lista.pop()
+    argumento_deletado.append(tarefa)
     salvar_lista(lista)
-    return deletado
+    print(f'{verde}Tarefa apagada com sucesso!{branco}')
+    print()
+    return
 
-def refazer(argumento_deletado):
-    lista = ler_lista()
+def refazer(lista, argumento_deletado):
+    os.system('cls')
     if argumento_deletado is not None:
-        lista.append(argumento_deletado)
+        tarefa = argumento_deletado.pop()
+        lista.append(tarefa)
         salvar_lista(lista)
+        print(f'{verde}Tarefa refeita com sucesso!{branco}')
+        print()
+        return
+    
+    print(f'{vermelho}Nenhuma tarefa para refazer!{branco}')
+    return
 
+def sair():
+    print(f'{vermelho}Saindo...{branco}')
+    os._exit(0)
+    
+argumento_deletado =[]
 # sistema
-deletado = None
+
+
+comandos = {
+    'listar': lambda: listar(lista),
+    'apagar': lambda: apagar(lista, argumento_deletado),
+    'refazer': lambda: refazer(lista, argumento_deletado),
+    'sair': lambda: sair()
+}
+
 while True:
-    print('comandos: listar apagar refazer')
-    opcao = input('Digite uma tarefa ou comando: ').lower()
-    if opcao == 'listar':
-        os.system('cls')
-        listar()
-    elif opcao == 'apagar':
-        os.system('cls')
-        deletado = apagar()
-        if deletado is not None:
-            print(f'{verde}Tarefa apagada com sucesso!{branco}')
-    elif opcao == 'refazer':
-        os.system('cls')
-        if deletado is not None:
-            refazer(argumento_deletado=deletado)
-            print(f'{verde}Tarefa refeita com sucesso!{branco}')
-            deletado = None
-        else:
-            print(f'{vermelho}Nenhuma tarefa para refazer!{branco}')
-    elif opcao == 'sair':
-        os.system('cls')
-        print(f'{verde}Até mais!{branco}')
-        break
+    lista = ler_lista()
+    print('Comandos: Listar, Apagar, Refazer')
+    resposta = input('Digite um comando ou uma tarefa: ').lower()
+
+    if resposta in comandos:
+        comandos[resposta]()
     else:
         lista = ler_lista()
-        lista.append(opcao)
+        lista.append(resposta)
         salvar_lista(lista)
         os.system('cls')
         print(f'{verde}Tarefa adicionada com sucesso!{branco}')
+        print()
+    
+    
