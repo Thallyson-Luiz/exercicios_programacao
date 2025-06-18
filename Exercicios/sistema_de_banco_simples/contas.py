@@ -23,6 +23,9 @@ class Conta(ABC):
     
     def __str__(self) -> str:
         return f'Agencia: {self.agencia}\nSaldo: {self.saldo}\nConta: {self.conta_tipo}'
+    
+    def __repr__(self) -> str:
+        return self.__str__()
 
 class ContaPoupanca(Conta):
     def sacar(self, valor: int | float):
@@ -54,9 +57,6 @@ class ContaCorrente(Conta):
         print('Saque realizado com sucesso')
         self.printar_saldo()
         print(f'Limite: {self.limite}')
-
-    def __str__(self) -> str:
-        return f'Agencia: {self.agencia}\nSaldo: {self.saldo}\nConta: {self.conta_tipo}\nLimite: {self.limite}'
 
 
  

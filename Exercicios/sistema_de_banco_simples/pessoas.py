@@ -1,3 +1,4 @@
+""" Classes e módulos para pessoas """
 from contas import ContaCorrente, ContaPoupanca
 class Pessoa:
     def __init__(self, nome: str, idade: int) -> None:
@@ -21,6 +22,9 @@ class Pessoa:
     def __str__(self) -> str:
         nome_da_classe = self.__class__.__name__
         return f'{nome_da_classe}\n Nome: {self._nome}\nIdade: {self._idade}'
+    
+    def __repr__(self) -> str:
+        return self.__str__()
 
 class Cliente(Pessoa):
     def __init__(self, nome: str, idade: int, conta: ContaCorrente | ContaPoupanca | None = None) -> None:
