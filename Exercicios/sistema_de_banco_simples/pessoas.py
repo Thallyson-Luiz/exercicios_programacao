@@ -1,9 +1,11 @@
 """ Classes e módulos para pessoas """
 from contas import ContaCorrente, ContaPoupanca
+from dataclasses import dataclass
+
+@dataclass
 class Pessoa:
-    def __init__(self, nome: str, idade: int) -> None:
-        self._nome = nome
-        self._idade = idade
+    _nome: str
+    _idade: int
         
     @property
     def nome(self) -> str:
@@ -18,13 +20,6 @@ class Pessoa:
     @idade.setter
     def idade(self, idade: int) -> None:
         self._idade = idade
-
-    def __str__(self) -> str:
-        nome_da_classe = self.__class__.__name__
-        return f'{nome_da_classe}\n Nome: {self._nome}\nIdade: {self._idade}'
-    
-    def __repr__(self) -> str:
-        return self.__str__()
 
 class Cliente(Pessoa):
     def __init__(self, nome: str, idade: int, conta: ContaCorrente | ContaPoupanca | None = None) -> None:
